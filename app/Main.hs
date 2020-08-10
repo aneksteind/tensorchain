@@ -164,8 +164,6 @@ main = do
 
         matrices = [4,3,5,2,4,3,2]
 
-        
-        
     putStrLn . show $ chainM matrices
     putStrLn . show $ chainM2 matrices
     putStrLn . show . totalCost . chainT $ V.fromList tensors
