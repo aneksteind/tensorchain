@@ -1,6 +1,6 @@
 module Main where
 
-import Chain (TensorData(..), chainM, chainM2, chainT)
+import Chain (TensorData(..), chainM, chainM2, chainT, chainTBF)
 import qualified Data.HashMap.Strict as Map
 import qualified Data.Vector as V
 
@@ -20,4 +20,5 @@ main = do
     putStrLn . show $ chainM matrices
     putStrLn . show $ chainM2 matrices
     putStrLn . show . totalCost . chainT $ V.fromList tensors
+    putStrLn . show . chainTBF $ V.fromList tensors
     putStrLn . show . recipe . chainT $ V.fromList tensors

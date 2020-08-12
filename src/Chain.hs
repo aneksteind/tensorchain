@@ -2,15 +2,18 @@ module Chain
     ( chainM
     , chainM2
     , chainT
+    , chainTBF
     , TensorData(..)
     ) where
 
+import Data.List (foldl')
 import Data.List.Extras (argmin)
 import qualified Data.HashMap.Strict as Map
 import Data.HashMap.Strict ((!), difference)
 
 import           Data.Vector (Vector)
 import qualified Data.Vector as V
+import Debug.Trace (trace)
 
 type Map = Map.HashMap
 
@@ -105,6 +108,33 @@ chainM2 dims = best where
                 [space (i-1,k,j) + cost i k + cost (k+1) j | k <- [i..j-1]]
 
 tspace = Map.foldl (*) 1
+
+-- brute force chain approach
+chainTBF :: Vector Tensor -> Int
+chainTBF tensors = go start end where
+    start = 0
+    end = (length tensors)
+    go s e | e - s <= 1 = 0
+           | otherwise = minimum combinations where
+        combinations = [go s k + go k e + combine s k e | k <- [s+1..e-1]]
+        combine i k j = prod union where
+            prod = Map.foldl (*) 1
+            union = Map.union left right
+            left = symDiff i k
+            right = symDiff k j
+
+        -- symmetric difference of a collection of tensor indices
+        symDiff :: Int -> Int -> Tensor
+        symDiff i j = V.foldl1 sd (slice i j)
+
+        -- gets a subchain of tensors
+        slice :: Int -> Int -> Vector Tensor
+        slice i j = V.take (j-i) $ V.drop i tensors
+
+        -- symmetric difference of two sets of tensor indices
+        sd :: Tensor -> Tensor -> Tensor
+        sd t1 t2 = Map.union (Map.difference t1 t2) (Map.difference t2 t1)
+
 
 -- find the best ordering for a collection of tensors: O(N^3+RN^2)
 chainT :: Vector Tensor -> TensorData
