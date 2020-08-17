@@ -25,7 +25,7 @@ instance Functor (ListF v) where
 type Algebra f a = f a -> a
 type CoAlgebra f a = a -> f a
 
-type Tensor = Map Int Int
+type Tensor = Map Int Integer
 
 data ContractionTree a = 
     Tensor a 
@@ -36,9 +36,9 @@ instance Show a => Show (ContractionTree a) where
     show (Intermediate l r) = "(" ++ show l ++ " " ++ show r ++ ")"
 
 data TensorData = TensorData {
-    totalCost :: Int,
+    totalCost :: Integer,
     recipe :: ContractionTree Int,
-    cspace :: Int,
+    cspace :: Integer,
     indices :: Tensor
 }
 
@@ -110,10 +110,10 @@ chainM2 dims = best where
 tspace = Map.foldl (*) 1
 
 -- brute force chain approach
-chainTBF :: Vector Tensor -> Int
+chainTBF :: Vector Tensor -> Integer
 chainTBF tensors = go start end where
     start = 0
-    end = (length tensors)
+    end = length tensors
     go s e | e - s <= 1 = 0
            | otherwise = minimum combinations where
         combinations = [go s k + go k e + combine s k e | k <- [s+1..e-1]]

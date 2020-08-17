@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1521fc5bc767809366014bb7dad390f35c13ffa31b715b6937cf3ce1405e9bd6
+-- hash: b7adb1076ea9c9bbd16e8ab397d713b5e485d7f138bd65e8760ac0f125641aa8
 
 name:           tensorchain
 version:        0.1.0.0
@@ -33,7 +33,8 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      QuickCheck >=2.14.1
+    , base >=4.7 && <5
     , containers >=0.6.2.1
     , list-extras >=0.4.1.4
     , unordered-containers >=0.2.11.0
@@ -48,7 +49,8 @@ executable tensorchain-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      QuickCheck >=2.14.1
+    , base >=4.7 && <5
     , containers >=0.6.2.1
     , list-extras >=0.4.1.4
     , tensorchain
@@ -65,7 +67,8 @@ test-suite tensorchain-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      QuickCheck >=2.14.1
+    , base >=4.7 && <5
     , containers >=0.6.2.1
     , list-extras >=0.4.1.4
     , tensorchain
